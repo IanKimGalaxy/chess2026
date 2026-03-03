@@ -36,6 +36,8 @@ public class Piece {
         return img;
     }
     
+    //precondition: g and currentSquare must be on-null valid objects.
+    //postcondition: the image stored in the img property of this object is drawn to the screen.
     public void draw(Graphics g, Square currentSquare) {
         int x = currentSquare.getX();
         int y = currentSquare.getY();

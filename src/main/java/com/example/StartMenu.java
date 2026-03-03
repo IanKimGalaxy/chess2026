@@ -25,7 +25,7 @@ public class StartMenu implements Runnable {
         // Set window properties
         startWindow.setLocation(300,100);
         startWindow.setResizable(false);
-        startWindow.setSize(260, 240);
+        startWindow.setSize(300, 240);
         
         Box components = Box.createVerticalBox();
         startWindow.add(components);
@@ -41,7 +41,7 @@ public class StartMenu implements Runnable {
         components.add(blackPanel, BorderLayout.EAST);
         final JLabel blackPiece = new JLabel();
         try {
-            Image blackImg = ImageIO.read(new File(System.getProperty("user.dir")+"/src/main/java/com/example/Pictures/bp.png"));
+            Image blackImg = ImageIO.read(new File(System.getProperty("user.dir")+Board.PICTURE_PATH+"bp.png"));
             blackPiece.setIcon(new ImageIcon(blackImg));
             blackPanel.add(blackPiece);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class StartMenu implements Runnable {
         final JLabel whitePiece = new JLabel();
         
         try {
-            Image whiteImg = ImageIO.read(new File(System.getProperty("user.dir")+"/src/main/java/com/example/Pictures/wp.png"));
+            Image whiteImg = ImageIO.read(new File(System.getProperty("user.dir")+Board.PICTURE_PATH+"wp.png"));
             whitePiece.setIcon(new ImageIcon(whiteImg));
             whitePanel.add(whitePiece);
             startWindow.setIconImage(whiteImg);
