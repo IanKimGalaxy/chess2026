@@ -77,9 +77,16 @@ public class SuperKnight extends Piece {
 
 
 
-}    
+    
    
+@Override public String toString() {
+        String placeholder = "This is a ";
+        if (this.getColor()) placeholder += "white SuperKnight";
+        else placeholder += "black SuperKnight";
 
+        return placeholder;
+    }
+}
 
 
 
