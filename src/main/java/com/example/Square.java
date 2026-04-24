@@ -22,7 +22,7 @@ public class Square extends JComponent {
     //true for white, false for black.
     private final boolean color;
     //if there's a piece on the square this stores it. If there isn't this stores null.
-    private SuperKnight occupyingPiece;
+    private Piece occupyingPiece;
    
     //if desired you can use this to retain the piece where it is but make it invisible to the user.
     //True means to display the piece. This property will be switched to false when we are dragging a piece around while choosing our next move.
@@ -49,7 +49,7 @@ public class Square extends JComponent {
         return this.color;
     }
    
-    public SuperKnight getOccupyingPiece() {
+    public Piece getOccupyingPiece() {
         return occupyingPiece;
     }
    
@@ -69,12 +69,12 @@ public class Square extends JComponent {
         this.dispPiece = v;
     }
    
-    public void put(SuperKnight p) {
+    public void put(Piece p) {
         this.occupyingPiece = p;
     }
    
-    public SuperKnight removePiece() {
-        SuperKnight p = this.occupyingPiece;
+    public Piece removePiece() {
+        Piece p = this.occupyingPiece;
         this.occupyingPiece = null;
         return p;
     }
@@ -95,11 +95,6 @@ public class Square extends JComponent {
         if(occupyingPiece != null && dispPiece) {
             occupyingPiece.draw(g, this);
         }
-    }
-
-    public void put(Piece currPiece) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'put'");
     }
    
    

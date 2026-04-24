@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+
 import javax.imageio.ImageIO;
 
 public class Piece {
@@ -18,11 +18,11 @@ public class Piece {
          
           try {
             if (this.img == null) {
-                this.img = ImageIO.read(new File(img_file));
+                this.img = ImageIO.read(new File(System.getProperty("user.dir") + img_file));
             }
-          } catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("File not found: " + e.getMessage());
-          }
+        }
 	}
 
 	public boolean getColor() {
@@ -47,6 +47,7 @@ public class Piece {
 	}
 
 //make sure to override this!
+@Override
 	public String toString() {
 		if (color)
 			return "white";

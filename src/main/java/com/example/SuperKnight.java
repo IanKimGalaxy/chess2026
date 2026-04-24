@@ -16,7 +16,7 @@ public class SuperKnight extends Piece {
  
 
 
-    // pre-conditions: board is a valid, fully initialized 8x8 2D array of Squares. start is a valid Square object located somewhere on that board.
+       // pre-conditions: board is a valid, fully initialized 8x8 2D array of Squares. start is a valid Square object located somewhere on that board.
     // post-conditions: Returns a list of all squares the Super Knight can physically reach in a 3x1 jump without going off the edges of the board. Does NOT check if those squares are blocked by friendly pieces.The board itself and the piece's location remain completely unchanged.
  
 	
@@ -28,7 +28,7 @@ public class SuperKnight extends Piece {
         ArrayList<Square> controlledSquares = new ArrayList<Square>();
 
 
-        // All 8 possible moves for a 3x1 SuperKnight
+        // All 8 possible moves for a 3x1 Super Knight
         int[] rowOffsets = {3,3,-3,-3,1,1,-1,-1};
         int[] colOffsets = {1,-1,1,-1,3,-3,3,-3};
 
@@ -73,6 +73,7 @@ public class SuperKnight extends Piece {
         return valid;
    
     }
+
 
 
 
