@@ -1,6 +1,3 @@
-
-
-
 package com.example;
 
 
@@ -15,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.net.URL;
-
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -119,13 +116,19 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         // White pieces
         board[7][1].put(new SuperKnight(true, RESOURCES_WKNIGHT_PNG));
         board[7][6].put(new SuperKnight(true, RESOURCES_WKNIGHT_PNG));
-
-
+        board[7][4].put(new King(true, RESOURCES_WKING_PNG));
+        board[7][3].put(new Queen(true, RESOURCES_WQUEEN_PNG));
+        board[7][0].put(new Rook(true, RESOURCES_WROOK_PNG));
+        board[7][7].put(new Rook(true, RESOURCES_WROOK_PNG));
 
 
         // Black pieces
         board[0][1].put(new SuperKnight(false, RESOURCES_BKNIGHT_PNG));
         board[0][6].put(new SuperKnight(false, RESOURCES_BKNIGHT_PNG));
+        board[0][4].put(new King(false, RESOURCES_BKING_PNG));
+        board[0][3].put(new Queen(false, RESOURCES_BQUEEN_PNG));
+        board[0][0].put(new Rook(false, RESOURCES_BROOK_PNG));
+        board[0][7].put(new Rook(false, RESOURCES_BROOK_PNG));
     }
 
 
@@ -189,6 +192,40 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
             }
         }
     }
+       
+
+    // precondition - the board is initialized and contains a king of either color. The boolean kingColor corresponds to the color of the king we wish to know the status of.
+    // postcondition - returns true of the king is in check and false otherwise.
+    public boolean isInCheck(boolean kingColor) {
+        Square kingSquare = null;
+
+        // 1. Find the King of the specified color
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece p = board[row][col].getOccupyingPiece();
+                if (p instanceof King && p.getColor() == kingColor) {
+                    kingSquare = board[row][col];
+                    break;
+                }
+            }
+        }
+
+        // 2. Check if any enemy piece controls the king's square
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece p = board[row][col].getOccupyingPiece();
+                if (p != null && p.getColor() != kingColor) {
+                    // Get all squares this enemy piece attacks
+                    ArrayList<Square> attackedSquares = p.getControlledSquares(board, board[row][col]);
+                    if (attackedSquares.contains(kingSquare)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
 
     @Override
@@ -228,30 +265,42 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     // post-condition: If the user moved the piece to a valid square, the selected piece moves to the selected square. The turn will also change once the piece arrives to that square.
 
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
-       
-         if (fromMoveSquare != null && currPiece != null) {
-            if (currPiece.getLegalMoves(this, fromMoveSquare).contains(endSquare)) {
-                endSquare.put(currPiece);
-                fromMoveSquare.removePiece();
+
+@Override
+public void mouseReleased(MouseEvent e) {
+    Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
+
+    // Making sure we dropped a piece on a square
+    if (fromMoveSquare != null && currPiece != null && endSquare instanceof Square) {
+        
+        // 2Check if move is possible
+        if (currPiece.getLegalMoves(this, fromMoveSquare).contains(endSquare)) {
+            
+            // Simulate and save that position
+            Piece capturedPiece = endSquare.getOccupyingPiece();
+            endSquare.put(currPiece);
+            fromMoveSquare.removePiece();
+
+            // Undoes the move if illegal, but if not changes turn.
+            if (isInCheck(whiteTurn)) {
+                fromMoveSquare.put(currPiece);
+                endSquare.put(capturedPiece);
+            } else {
                 whiteTurn = !whiteTurn;
             }
         }
-
-
-        fromMoveSquare.setDisplay(true);
-        currPiece = null;
-
-
-        for (Square[] row : board) {
-            for (Square s : row) s.setBorder(null);
-        }
-
-
-        repaint();
     }
+
+    if (fromMoveSquare != null) fromMoveSquare.setDisplay(true);
+    currPiece = null;
+    fromMoveSquare = null; // Reset this so the next drag starts fresh
+
+    for (Square[] row : board) {
+        for (Square s : row) s.setBorder(null);
+    }
+    
+    repaint();
+}
 
 
     @Override
